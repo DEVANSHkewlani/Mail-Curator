@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="theme-color" content="#b02f00"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Curator Mail — Send</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#f0eee9;color:#1b1c19;display:flex;height:100vh;overflow:hidden;}
+aside{width:220px;min-width:220px;background:#fbf9f4;border-right:1px solid #e4e2dd;display:flex;flex-direction:column;padding:24px 16px;gap:20px;}
+.brand{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:#1b1c19;}
+.brand-sub{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#907067;margin-top:2px;}
+.btn-new{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;background:linear-gradient(135deg,#b02f00,#ff5722);color:#fff;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border:none;cursor:pointer;border-radius:3px;width:100%;}
+nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#5b4039;cursor:pointer;border-radius:3px;border:none;background:none;width:100%;text-align:left;transition:background .15s;}
+.nav-item:hover{background:#f0eee9;}
+.nav-item.active{background:#fff;color:#b02f00;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-item.active .material-symbols-outlined{color:#b02f00;}
+.nav-item .material-symbols-outlined{font-size:17px;color:#907067;}
+.sb-status{border-top:1px solid #e4e2dd;padding-top:14px;display:flex;flex-direction:column;gap:5px;}
+.sb-stat{font-size:10px;color:#907067;}
+.page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.page-header{background:#fbf9f4;border-bottom:1px solid #e4e2dd;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.page-title-sub{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#b02f00;}
+.page-title{font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;color:#1b1c19;line-height:1.1;margin-top:2px;}
+.page-body{flex:1;overflow:hidden;display:flex;gap:16px;padding:20px 24px 0;}
+.footer-bar{background:#fbf9f4;border-top:1px solid #e4e2dd;padding:7px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.footer-stats{display:flex;gap:16px;font-size:10px;color:#907067;}
+.footer-links{display:flex;gap:14px;font-size:10px;}
+.footer-links a{color:#c4a89e;text-decoration:none;}
+.footer-links a:hover{color:#5b4039;}
+/* Panel system */
+.panel{background:#fff;border:1px solid #e4e2dd;display:flex;flex-direction:column;overflow:hidden;border-radius:3px;}
+.panel-section{padding:16px 20px;border-bottom:1px solid #f0eee9;flex-shrink:0;}
+.panel-section:last-child{border-bottom:none;}
+.sec-label{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#907067;font-weight:700;margin-bottom:10px;}
+/* Fields */
+.field{width:100%;background:#f5f3ee;border:1px solid transparent;border-radius:3px;padding:9px 12px;font-size:13px;color:#1b1c19;outline:none;font-family:'Inter',sans-serif;transition:border-color .15s,box-shadow .15s;}
+.field:focus{border-color:#ff572260;box-shadow:0 0 0 2px #ff572218;}
+.field::placeholder{color:#c4a89e;}
+.field-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#5b4039;font-weight:600;margin-bottom:5px;display:block;}
+/* Buttons */
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;background:linear-gradient(135deg,#b02f00,#ff5722);color:#fff;font-size:11px;font-weight:600;border:none;border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;transition:filter .15s;}
+.btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:none;border:1px solid #e4beb4;color:#5b4039;font-size:11px;font-weight:500;border-radius:3px;cursor:pointer;transition:background .15s;}
+.btn-ghost:hover{background:#f5f3ee;}
+.btn-danger{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:none;border:1px solid #fecaca;color:#b91c1c;font-size:11px;font-weight:500;border-radius:3px;cursor:pointer;transition:background .15s;}
+.btn-danger:hover{background:#fef2f2;}
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-radius:2px;}
+.badge-ok{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.badge-err{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
+.badge-warn{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.dot-green{background:#22c55e;}
+.dot-red{background:#ef4444;}
+.dot-grey{background:#9ca3af;}
+/* Progress */
+.prog-track{height:4px;background:#e4e2dd;border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#b02f00,#ff5722);border-radius:2px;transition:width .3s ease;}
+/* Log */
+.log-line{display:flex;gap:10px;font-size:11px;font-family:'Courier New',monospace;line-height:1.6;padding:1px 0;}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(3px);z-index:100;display:none;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:#fff;border-radius:3px;width:100%;max-width:540px;max-height:82vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.15);}
+input[type=range]{accent-color:#b02f00;width:100%;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:#e4beb4;}
+</style>
+</head>
+<body>
+
+<!-- Dry Run Modal -->
+<div id="dryRunModal" class="modal-bg">
+  <div class="modal">
+    <div style="padding:18px 22px;border-bottom:1px solid #e4e2dd;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <span style="font-size:14px;font-weight:600;">Dry Run Preview</span>
+      <button onclick="closeDryRun()" style="background:none;border:none;cursor:pointer;color:#907067;display:flex;align-items:center;"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div style="padding:12px 22px;border-bottom:1px solid #f0eee9;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <button onclick="dryPrev()" class="btn-ghost" style="padding:5px 10px;"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">chevron_left</span></button>
+      <span id="dryCounter" style="flex:1;text-align:center;font-size:11px;color:#907067;">1 / 0</span>
+      <button onclick="dryNext()" class="btn-ghost" style="padding:5px 10px;"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">chevron_right</span></button>
+    </div>
+    <div id="dryCard" style="padding:22px;overflow-y:auto;flex:1;font-size:13px;line-height:1.75;"></div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<aside>
+  <div>
+    <div class="brand">The Curator Mail</div>
+    <div class="brand-sub">Enterprise Suite</div>
+  </div>
+  <button class="btn-new" onclick="navigate('compose')">
+    <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">add</span> Create New
+  </button>
+  <nav>
+    <button class="nav-item" onclick="navigate('compose')"><span class="material-symbols-outlined">edit_note</span> Compose</button>
+    <button class="nav-item" onclick="navigate('contacts')"><span class="material-symbols-outlined">contacts</span> Contacts</button>
+    <button class="nav-item" onclick="navigate('attachments')"><span class="material-symbols-outlined">attachment</span> Attachments</button>
+    <button class="nav-item active" onclick="navigate('send')"><span class="material-symbols-outlined">send</span> Send</button>
+  </nav>
+  <div class="sb-status">
+    <div class="sb-stat" id="sb-contacts">0 contacts</div>
+    <div class="sb-stat" id="sb-attachments">0 attachments</div>
+    <div class="sb-stat" id="sb-smtp">SMTP: not configured</div>
+  </div>
+  <div style="margin-top:auto; padding-top:10px; border-top:1px solid #e4e2dd;">
+    <button class="nav-item" onclick="AUTH.logout()" style="color:#b02f00;">
+      <span class="material-symbols-outlined">logout</span>
+      Log Out
+    </button>
+  </div>
+</aside>
+
+<!-- Page -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title-sub">Control Room</div>
+      <div class="page-title">Launch &amp; Send</div>
+    </div>
+    <div id="globalSmtpBadge" class="badge badge-warn"><span class="dot dot-grey"></span> SMTP not configured</div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- LEFT PANEL: SMTP + Delay + Metrics — one box, sections divided by lines -->
+    <div class="panel" style="width:300px;min-width:300px;overflow-y:auto;">
+
+      <!-- SMTP section -->
+      <div class="panel-section">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div class="sec-label" style="margin-bottom:0;">SMTP Settings</div>
+          <div id="smtpBadge" class="badge badge-warn"><span class="dot dot-grey"></span> Not tested</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div>
+            <label class="field-label">Host</label>
+            <input id="smtpHost" class="field" placeholder="smtp.gmail.com" oninput="saveSMTP()"/>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <div style="flex:1;">
+              <label class="field-label">Port</label>
+              <input id="smtpPort" class="field" placeholder="587" type="number" oninput="saveSMTP()"/>
+            </div>
+            <div style="flex:2;">
+              <label class="field-label">Sender Email</label>
+              <input id="smtpEmail" class="field" placeholder="you@example.com" type="email" oninput="saveSMTP()"/>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Password</label>
+            <div style="position:relative;">
+              <input id="smtpPass" class="field" placeholder="password" type="password" style="padding-right:40px;" oninput="saveSMTP()"/>
+              <button onclick="togglePass()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#907067;display:flex;align-items:center;">
+                <span class="material-symbols-outlined" id="passIcon" style="font-size:17px;vertical-align:middle;">visibility</span>
+              </button>
+            </div>
+          </div>
+          <button onclick="testSMTP()" class="btn-ghost" style="width:100%;justify-content:center;">
+            <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">wifi_tethering</span> Test Connection
+          </button>
+        </div>
+      </div>
+
+      <!-- Delay section -->
+      <div class="panel-section">
+        <div class="sec-label">Send Cadence</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;">
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#907067;font-weight:700;margin-bottom:3px;">Wait Interval</div>
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;color:#1b1c19;line-height:1;"><span id="delayVal">3</span><span style="font-size:13px;color:#907067;font-style:normal;margin-left:4px;">sec</span></div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#907067;font-weight:700;margin-bottom:3px;">ETA</div>
+            <div id="etaLabel" style="font-size:13px;font-weight:500;color:#1b1c19;">—</div>
+          </div>
+        </div>
+        <input type="range" id="delaySlider" min="0" max="60" value="3" oninput="updateDelay()"/>
+        <p style="font-size:10px;color:#c4a89e;line-height:1.6;margin-top:8px;">Delay prevents IP throttling and improves deliverability.</p>
+      </div>
+
+      <!-- Metrics section -->
+      <div class="panel-section">
+        <div class="sec-label">Campaign Metrics</div>
+        <div style="display:flex;gap:0;border:1px solid #f0eee9;border-radius:3px;overflow:hidden;">
+          <div style="flex:1;padding:14px 16px;border-right:1px solid #f0eee9;">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#907067;font-weight:700;margin-bottom:4px;">Recipients</div>
+            <div id="metricTotal" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:#1b1c19;line-height:1;">0</div>
+          </div>
+          <div style="flex:1;padding:14px 16px;">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#907067;font-weight:700;margin-bottom:4px;">Dispatched</div>
+            <div id="metricSent" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:#b02f00;line-height:1;">0</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end left panel -->
+
+    <!-- RIGHT PANEL: Launch state + Execution Log — one box, two sections -->
+    <div class="panel" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+
+      <!-- Top progress stripe -->
+      <div style="height:3px;background:#f0eee9;flex-shrink:0;"><div id="topProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#b02f00,#ff5722);transition:width .3s;"></div></div>
+
+      <!-- Launch section -->
+      <div class="panel-section" style="flex-shrink:0;">
+
+        <!-- Awaiting state -->
+        <div id="stateAwaiting">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;">
+            <div>
+              <div class="sec-label">Readiness</div>
+              <div id="readinessChecks" style="display:flex;flex-direction:column;gap:6px;"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-shrink:0;padding-top:20px;">
+              <button onclick="openDryRun()" class="btn-ghost">
+                <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">visibility</span> Dry Run
+              </button>
+              <button id="sendAllBtn" onclick="startSend()" class="btn-primary" disabled>
+                <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">rocket_launch</span> Send All
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sending state -->
+        <div id="stateSending" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div>
+              <div class="sec-label">Sending in Progress</div>
+              <div id="sendLabel" style="font-size:14px;font-weight:600;color:#1b1c19;">Sending 0 / 0</div>
+            </div>
+            <button onclick="stopSend()" class="btn-danger">
+              <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">stop_circle</span> Stop
+            </button>
+          </div>
+          <div class="prog-track" style="margin-bottom:10px;"><div id="sendProgressBar" class="prog-fill" style="width:0%;"></div></div>
+          <div style="display:flex;gap:20px;font-size:12px;margin-bottom:8px;">
+            <span id="sentCount" style="color:#15803d;font-weight:600;">0 sent</span>
+            <span id="failedCount" style="color:#b91c1c;font-weight:600;">0 failed</span>
+          </div>
+          <div id="failedList" style="font-size:11px;color:#b91c1c;line-height:1.8;"></div>
+        </div>
+
+        <!-- Done state -->
+        <div id="stateDone" style="display:none;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <span class="material-symbols-outlined" style="font-size:32px;color:#15803d;vertical-align:middle;">check_circle</span>
+            <div>
+              <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;color:#1b1c19;">Campaign Complete</div>
+              <div id="doneLabel" style="font-size:12px;color:#907067;margin-top:3px;"></div>
+            </div>
+            <button onclick="resetSend()" class="btn-ghost" style="margin-left:auto;">
+              <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">refresh</span> Reset
+            </button>
+          </div>
+        </div>
+
+      </div><!-- end launch section -->
+
+      <!-- Execution Log section — fills remaining height -->
+      <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:10px 20px;border-bottom:1px solid #f0eee9;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#fafaf8;">
+          <span style="font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#907067;font-weight:700;">Execution Log</span>
+          <div style="display:flex;gap:10px;">
+            <button onclick="clearLog()" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#907067;background:none;border:none;cursor:pointer;">Clear</button>
+            <button onclick="exportLog()" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#b02f00;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:4px;">
+              <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;">download</span> Export
+            </button>
+          </div>
+        </div>
+        <div id="logContainer" style="flex:1;overflow-y:auto;background:#0f1117;padding:14px 16px;font-family:'Courier New',monospace;"></div>
+      </div>
+
+    </div><!-- end right panel -->
+
+  </div><!-- end page-body -->
+
+  <div class="footer-bar">
+    <div class="footer-stats">
+      <span id="footer-contacts">0 contacts</span>
+      <span style="color:#e4e2dd;">|</span>
+      <span id="footer-attachments">0 attachments</span>
+      <span style="color:#e4e2dd;">|</span>
+      <span id="footer-smtp">SMTP: not configured</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=5"></script>
+<script>
+let _sending=false,_stopReq=false,_dryIdx=0,_currentJobId=null,_es=null;
+const SEND_LOG_VERSION='smtp-retry-v1';
+
+document.addEventListener('DOMContentLoaded',()=>{
+  if(localStorage.getItem('cm_sendLogVersion')!==SEND_LOG_VERSION){
+    AppState.sendLog=[];
+    localStorage.setItem('cm_sendLogVersion',SEND_LOG_VERSION);
+  }
+  loadSMTP(); updateStatusBar(); updateDelay(); updateReadiness(); restoreLog(); restoreSendResults();
+});
+
+// SMTP
+function saveSMTP(){
+  const previous=AppState.smtp;
+  const next={
+    host:document.getElementById('smtpHost').value,
+    port:document.getElementById('smtpPort').value,
+    email:document.getElementById('smtpEmail').value,
+    pass:document.getElementById('smtpPass').value,
+  };
+  if(previous.host!==next.host||String(previous.port||'')!==String(next.port||'')||previous.email!==next.email||previous.pass!==next.pass){
+    AppState.smtpTested=false;
+    setSmtpBadge(false);
+  }
+  AppState.smtp=next;
+  updateReadiness();
+  updateStatusBar();
+}
+function loadSMTP(){
+  const s=AppState.smtp;
+  if(s.host) document.getElementById('smtpHost').value=s.host;
+  if(s.port) document.getElementById('smtpPort').value=s.port;
+  if(s.email) document.getElementById('smtpEmail').value=s.email;
+  if(s.pass) document.getElementById('smtpPass').value=s.pass;
+  if(AppState.smtpTested) setSmtpBadge(true);
+}
+function togglePass(){
+  const i=document.getElementById('smtpPass'),ic=document.getElementById('passIcon');
+  if(i.type==='password'){i.type='text';ic.textContent='visibility_off';}
+  else{i.type='password';ic.textContent='visibility';}
+}
+async function testSMTP(){
+  const host=document.getElementById('smtpHost').value.trim();
+  const port=document.getElementById('smtpPort').value.trim();
+  const email=document.getElementById('smtpEmail').value.trim();
+  const pass=document.getElementById('smtpPass').value;
+  if(!host||!port||!email){showToast('Fill in host, port, and email first','warning');return;}
+  const b=document.getElementById('smtpBadge');
+  b.className='badge badge-warn'; b.innerHTML='<span class="dot dot-grey"></span> Testing...';
+  addLog('info','Testing SMTP connection to '+host+':'+port+' via server...');
+  AppState.smtp={
+    host,
+    port,
+    email,
+    pass,
+  };
+  try{
+    const result=await apiPost('/smtp/test',{host,port:parseInt(port),email,password:pass});
+    AppState.smtpTested=result.ok; setSmtpBadge(result.ok); updateReadiness(); updateStatusBar();
+    if(result.ok){addLog('ok',result.message);showToast('SMTP connection successful','success');}
+    else{addLog('err',result.message);showToast('SMTP failed: '+result.message,'error');}
+  }catch(e){
+    AppState.smtpTested=false; setSmtpBadge(false); updateReadiness();
+    addLog('err','SMTP test error — is the backend running? '+e.message);
+    showToast('SMTP test failed: '+e.message,'error');
+  }
+}
+function setSmtpBadge(ok){
+  const b=document.getElementById('smtpBadge'),g=document.getElementById('globalSmtpBadge');
+  if(ok){
+    b.className='badge badge-ok'; b.innerHTML='<span class="dot dot-green"></span> Connected';
+    g.className='badge badge-ok'; g.innerHTML='<span class="dot dot-green"></span> SMTP connected';
+    document.getElementById('sb-smtp').textContent='SMTP: connected';
+    document.getElementById('footer-smtp').textContent='SMTP: connected';
+  } else {
+    b.className='badge badge-err'; b.innerHTML='<span class="dot dot-red"></span> Failed';
+    g.className='badge badge-err'; g.innerHTML='<span class="dot dot-red"></span> SMTP failed';
+  }
+}
+
+// Delay
+function updateDelay(){
+  const v=parseInt(document.getElementById('delaySlider').value);
+  document.getElementById('delayVal').textContent=v;
+  const n=AppState.contacts.length;
+  if(n>0){
+    const secs=n*(v||0.05),mins=Math.ceil(secs/60);
+    document.getElementById('etaLabel').textContent=mins<60?'~'+mins+' min':'~'+(mins/60).toFixed(1)+' hr';
+  } else { document.getElementById('etaLabel').textContent='—'; }
+}
+
+// Readiness
+function updateReadiness(){
+  const contacts=AppState.contacts,compose=AppState.compose,smtpOk=AppState.smtpTested;
+  const checks=[
+    {label:'SMTP connected',ok:smtpOk},
+    {label:'Contacts loaded ('+contacts.length+')',ok:contacts.length>0},
+    {label:'Subject line set',ok:!!(compose.subject&&compose.subject.trim())},
+    {label:'Email body written',ok:!!(compose.bodyHtml&&compose.bodyHtml.trim())},
+  ];
+  document.getElementById('readinessChecks').innerHTML=checks.map(c=>
+    '<div style="display:flex;align-items:center;gap:7px;font-size:12px;color:'+(c.ok?'#15803d':'#907067')+';">'
+    +'<span class="material-symbols-outlined" style="font-size:15px;color:'+(c.ok?'#22c55e':'#d1cdc9')+';vertical-align:middle;">'+(c.ok?'check_circle':'radio_button_unchecked')+'</span>'
+    +c.label+'</div>'
+  ).join('');
+  const ready=smtpOk&&contacts.length>0;
+  document.getElementById('sendAllBtn').disabled=!ready;
+  document.getElementById('metricTotal').textContent=contacts.length;
+}
+
+// ─── Send ─────────────────────────────────────────────────────────────────────
+async function _buildApiPayload(){
+  const map=AppState.columnMap,compose=AppState.compose,smtp=AppState.smtp;
+  const delay=parseInt(document.getElementById('delaySlider').value)||0;
+
+  // Look up prior Message-IDs for reply threading
+  const emailList=AppState.contacts.map(row=>{
+    const eKey=map.email||'email'; return (row[eKey]||row.email||'').trim();
+  }).filter(Boolean);
+  let msgIdMap={};
+  try{
+    msgIdMap=await apiPost('/contacts/lookup-message-ids',{emails:emailList});
+  }catch(_){ /* DB unavailable — threading disabled for this run */ }
+
+  const apiContacts=AppState.contacts.map(row=>{
+    const eKey=map.email||'email',nKey=map.name||'name';
+    const email=(row[eKey]||row.email||'').trim();
+    const name=(row[nKey]||row.name||'').trim();
+    const extra={};
+    Object.entries(row).forEach(([k,v])=>{ if(k!==eKey&&k!==nKey) extra[k]=v; });
+    // Attach prior message_id for threading if we have one
+    if(msgIdMap[email]) extra['_prev_msg_id']=msgIdMap[email];
+    return {email,name,extra};
+  });
+
+  const comp=compose;
+  const includeSig=(comp.signatureEnabled!==false) && comp.signature;
+  let finalBodyHtml=`<div style="font-family:${comp.fontFamily||'sans-serif'}; font-size:${getFontSizePx(comp.fontSize||'4')}px; color:${comp.textColor||'#1b1c19'}; line-height:1.6;">`;
+  finalBodyHtml+=compose.bodyHtml||'';
+  if(includeSig) finalBodyHtml+=comp.signature;
+  finalBodyHtml+=`</div>`;
+
+  return {
+    smtp:{host:smtp.host,port:parseInt(smtp.port)||587,email:smtp.email,password:smtp.pass||''},
+    compose:{
+      from_name:compose.fromName||'',
+      reply_to:compose.replyTo||null,
+      cc:compose.cc||null,
+      subject:compose.subject||'',
+      body_html:finalBodyHtml,
+      html_mode:true,
+    },
+    contacts:apiContacts,
+    column_map:{email:map.email||'',name:map.name||'',company:map.company||'',role:map.role||'',city:map.city||''},
+    attachment_names:AppState.attachments.map(a=>a.name),
+    delay_seconds:delay,
+    campaign_name:compose.subject||'Campaign',
+  };
+}
+
+async function startSend(){
+  if(_sending) return;
+  const contacts=AppState.contacts;
+  if(!contacts.length){showToast('No contacts loaded','error');return;}
+  _sending=true; _stopReq=false; _currentJobId=null;
+  const total=contacts.length;
+  let sent=0,failed=0;
+  document.getElementById('failedList').innerHTML='';
+  document.getElementById('sendProgressBar').style.width='0%';
+  document.getElementById('topProgressBar').style.width='0%';
+  document.getElementById('sentCount').textContent='0 sent';
+  document.getElementById('failedCount').textContent='0 failed';
+  showState('sending');
+  addLog('info','Building payload + checking reply threading...');
+
+  try{
+    const payload=await _buildApiPayload();
+    const threadCount=payload.contacts.filter(c=>c.extra&&c.extra['_prev_msg_id']).length;
+    if(threadCount>0) addLog('info','Threading: '+threadCount+' recipient(s) will receive as reply');
+    addLog('info','Campaign started — '+total+' recipients');
+    const {job_id}=await apiPost('/send/start',payload);
+    _currentJobId=job_id;
+    addLog('info','Job ID: '+job_id+'. Streaming progress...');
+
+    _es=new EventSource('/send/stream/'+job_id+'?token='+encodeURIComponent(AUTH.token||''));
+
+    _es.onmessage=(event)=>{
+      const data=JSON.parse(event.data);
+
+      if(data.done&&!data.result){
+        _es.close(); _es=null; _sending=false;
+        if(Number.isInteger(data.sent)) sent=data.sent;
+        if(Number.isInteger(data.failed)) failed=data.failed;
+        const stopped=!!data.stopped;
+        const label=stopped
+          ?'Stopped — '+sent+' sent, '+failed+' failed'
+          :'Complete — '+sent+' sent, '+failed+' failed';
+        addLog(stopped?'warn':'ok',label);
+        showToast(label,stopped?'warning':'success');
+        AppState.sendResults={sent,failed,total:data.current||total};
+        document.getElementById('sentCount').textContent=sent+' sent';
+        document.getElementById('failedCount').textContent=failed+' failed';
+        document.getElementById('metricSent').textContent=sent;
+        document.getElementById('doneLabel').textContent=label;
+        showState('done'); updateStatusBar(); return;
+      }
+
+      if(!data.result) return;
+      const r=data.result;
+      // Cache message_id for reply threading in future campaigns
+      if(r.ok && r.message_id){
+        const ids=AppState.sentMessageIds;
+        ids[r.email]=r.message_id;
+        AppState.sentMessageIds=ids;
+      }
+      if(r.ok){
+        sent++;
+        addLog('ok','Sent to '+r.email+' | "'+r.subject+'"');
+      } else {
+        failed++;
+        addLog('err','Failed: '+r.email+' — '+(r.error||'unknown error'));
+        document.getElementById('failedList').innerHTML+='<div>&#x2717; '+r.email+' — '+(r.error||'unknown')+'</div>';
+      }
+      const pct=Math.round((data.current/data.total)*100);
+      document.getElementById('sendProgressBar').style.width=pct+'%';
+      document.getElementById('topProgressBar').style.width=pct+'%';
+      document.getElementById('sendLabel').textContent='Sending '+data.current+' / '+data.total;
+      document.getElementById('sentCount').textContent=sent+' sent';
+      document.getElementById('failedCount').textContent=failed+' failed';
+      document.getElementById('metricSent').textContent=sent;
+    };
+
+    _es.onerror=(e)=>{
+      _es.close(); _es=null; _sending=false;
+      addLog('err','Stream connection lost — check that the backend is running.');
+      showToast('Connection error','error');
+      showState('awaiting');
+    };
+
+  }catch(e){
+    _sending=false;
+    addLog('err','Failed to start campaign: '+e.message);
+    showToast('Launch failed: '+e.message,'error');
+    showState('awaiting');
+  }
+}
+
+async function stopSend(){
+  if(_currentJobId){
+    try{ await apiPost('/send/stop/'+_currentJobId,{}); }catch(_){}
+  }
+  _stopReq=true;
+  showToast('Stop signal sent — finishing current email...','warning');
+}
+function resetSend(){
+  _sending=false;_stopReq=false;
+  document.getElementById('sendProgressBar').style.width='0%';
+  document.getElementById('topProgressBar').style.width='0%';
+  document.getElementById('failedList').innerHTML='';
+  document.getElementById('metricSent').textContent='0';
+  showState('awaiting'); updateReadiness();
+}
+function showState(s){
+  document.getElementById('stateAwaiting').style.display=s==='awaiting'?'block':'none';
+  document.getElementById('stateSending').style.display=s==='sending'?'block':'none';
+  document.getElementById('stateDone').style.display=s==='done'?'block':'none';
+}
+function restoreSendResults(){
+  const r=AppState.sendResults;
+  if(r){document.getElementById('metricSent').textContent=r.sent||0;}
+  document.getElementById('metricTotal').textContent=AppState.contacts.length;
+}
+
+// Dry Run
+function openDryRun(){_dryIdx=0;document.getElementById('dryRunModal').classList.add('open');renderDryCard();}
+function closeDryRun(){document.getElementById('dryRunModal').classList.remove('open');}
+function dryNext(){if(_dryIdx<AppState.contacts.length-1){_dryIdx++;renderDryCard();}}
+function dryPrev(){if(_dryIdx>0){_dryIdx--;renderDryCard();}}
+function renderDryCard(){
+  const contacts=AppState.contacts,n=contacts.length;
+  document.getElementById('dryCounter').textContent=n?((_dryIdx+1)+' / '+n):'0 / 0';
+  const card=document.getElementById('dryCard');
+  if(!n){card.innerHTML='<p style="color:#907067;text-align:center;padding:32px 0;">No contacts loaded. Go to Contacts page first.</p>';return;}
+  const c=contacts[_dryIdx],map=AppState.columnMap,compose=AppState.compose;
+  const subject=fillPlaceholders(compose.subject||'(no subject)',c,map);
+  const body=fillPlaceholders(compose.bodyHtml||'(no body)',c,map,true);
+  const toEmail=c[map.email]||c.email||'—';
+
+  const previewStyle = `font-family:${compose.fontFamily}; font-size:${getFontSizePx(compose.fontSize)}px; color:${compose.textColor}; line-height:1.6;`;
+
+  card.innerHTML='<div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0eee9;">'
+    +'<div style="display:flex;gap:8px;margin-bottom:5px;font-size:12px;"><span style="font-weight:600;color:#5b4039;width:52px;flex-shrink:0;">From:</span><span>'+(compose.fromName||'—')+'</span></div>'
+    +'<div style="display:flex;gap:8px;margin-bottom:5px;font-size:12px;"><span style="font-weight:600;color:#5b4039;width:52px;flex-shrink:0;">To:</span><span>'+toEmail+'</span></div>'
+    +'<div style="display:flex;gap:8px;font-size:12px;"><span style="font-weight:600;color:#5b4039;width:52px;flex-shrink:0;">Subject:</span><span style="font-weight:500;">'+subject+'</span></div>'
+    +'</div><div style="'+previewStyle+'">'+body+'</div>';
+}
+
+// Log
+function addLog(type,msg){
+  const ts=new Date().toLocaleTimeString('en-US',{hour12:false});
+  const colors={ok:'#4ade80',err:'#f87171',info:'#60a5fa',warn:'#fbbf24'};
+  const labels={ok:'[OK]  ',err:'[ERR] ',info:'[INFO]',warn:'[WARN]'};
+  const container=document.getElementById('logContainer');
+  const line=document.createElement('div');
+  line.className='log-line';
+  line.innerHTML='<span style="color:#6b7280;flex-shrink:0;">'+ts+'</span>'
+    +'<span style="color:'+(colors[type]||'#9ca3af')+';flex-shrink:0;">'+(labels[type]||'[LOG] ')+'</span>'
+    +'<span style="color:#e5e7eb;">'+msg+'</span>';
+  container.appendChild(line);
+  container.scrollTop=container.scrollHeight;
+  const log=AppState.sendLog;
+  log.push({ts,type,msg});
+  if(log.length>500) log.splice(0,log.length-500);
+  AppState.sendLog=log;
+}
+function restoreLog(){
+  const log=AppState.sendLog;
+  if(!log.length){addLog('info','System ready. Configure SMTP and load contacts to begin.');return;}
+  const colors={ok:'#4ade80',err:'#f87171',info:'#60a5fa',warn:'#fbbf24'};
+  const labels={ok:'[OK]  ',err:'[ERR] ',info:'[INFO]',warn:'[WARN]'};
+  const container=document.getElementById('logContainer');
+  log.forEach(e=>{
+    const line=document.createElement('div'); line.className='log-line';
+    line.innerHTML='<span style="color:#6b7280;flex-shrink:0;">'+e.ts+'</span>'
+      +'<span style="color:'+(colors[e.type]||'#9ca3af')+';flex-shrink:0;">'+(labels[e.type]||'[LOG] ')+'</span>'
+      +'<span style="color:#e5e7eb;">'+e.msg+'</span>';
+    container.appendChild(line);
+  });
+  container.scrollTop=999999;
+}
+function clearLog(){document.getElementById('logContainer').innerHTML='';AppState.sendLog=[];addLog('info','Log cleared.');}
+function exportLog(){
+  const log=AppState.sendLog;
+  if(!log.length){showToast('Log is empty','warning');return;}
+  const text=log.map(e=>'['+e.ts+'] '+e.type.toUpperCase().padEnd(4)+' '+e.msg).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download='curator_mail_log_'+Date.now()+'.txt';
+  a.click();
+  showToast('Log exported','success');
+}
+</script>
+</body>
+</html>

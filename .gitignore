@@ -1,0 +1,20 @@
+# Create .gitignore
+cat <<EOF > .gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.env
+
+# Database
+*.sqlite
+pgdata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+backend/uploads/
+EOF

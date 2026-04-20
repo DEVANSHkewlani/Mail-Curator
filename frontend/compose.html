@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Mail Curator — Compose</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#b02f00" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0eee9;
+      color: #1b1c19;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    aside {
+      width: 220px;
+      min-width: 220px;
+      background: #fbf9f4;
+      border-right: 1px solid #e4e2dd;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+      gap: 20px;
+    }
+
+    .brand {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: #1b1c19;
+    }
+
+    .brand-sub {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: #907067;
+      margin-top: 2px;
+    }
+
+    .btn-new {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 12px;
+      background: linear-gradient(135deg, #b02f00, #ff5722);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+      width: 100%;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #5b4039;
+      cursor: pointer;
+      border-radius: 3px;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      transition: background .15s;
+    }
+
+    .nav-item:hover {
+      background: #f0eee9;
+    }
+
+    .nav-item.active {
+      background: #fff;
+      color: #b02f00;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+    }
+
+    .nav-item.active .material-symbols-outlined,
+    .nav-item.active span {
+      color: #b02f00;
+    }
+
+    .nav-item .material-symbols-outlined {
+      font-size: 17px;
+      color: #907067;
+    }
+
+    .sb-status {
+      border-top: 1px solid #e4e2dd;
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .sb-stat {
+      font-size: 10px;
+      color: #907067;
+    }
+
+    .page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .page-header {
+      background: #fbf9f4;
+      border-bottom: 1px solid #e4e2dd;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .page-title-sub {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: #b02f00;
+    }
+
+    .page-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: #1b1c19;
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+
+    .page-body {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      gap: 16px;
+      padding: 20px 24px 0;
+    }
+
+    .footer-bar {
+      background: #fbf9f4;
+      border-top: 1px solid #e4e2dd;
+      padding: 7px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .footer-stats {
+      display: flex;
+      gap: 16px;
+      font-size: 10px;
+      color: #907067;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+      font-size: 10px;
+    }
+
+    .footer-links a {
+      color: #c4a89e;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: #5b4039;
+    }
+
+    /* Single panel with internal section dividers */
+    .panel {
+      background: #fff;
+      border: 1px solid #e4e2dd;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 3px;
+    }
+
+    .panel-section {
+      padding: 18px 22px;
+      border-bottom: 1px solid #f0eee9;
+    }
+
+    .panel-section:last-child {
+      border-bottom: none;
+    }
+
+    .sec-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: #907067;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .field {
+      width: 100%;
+      background: #f5f3ee;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      padding: 9px 12px;
+      font-size: 13px;
+      color: #1b1c19;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    .field:focus {
+      border-color: #ff572260;
+      box-shadow: 0 0 0 2px #ff572218;
+    }
+
+    .field::placeholder {
+      color: #c4a89e;
+    }
+
+    .field-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #5b4039;
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .field-row>div {
+      flex: 1;
+    }
+
+    .chips {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .chips-lbl {
+      font-size: 10px;
+      color: #c4a89e;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .chip {
+      padding: 2px 9px;
+      border: 1px solid #e4beb4;
+      background: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      color: #b02f00;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background .12s;
+    }
+
+    .chip:hover {
+      background: #ffdbd1;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: #f5f3ee;
+      border-bottom: 1px solid #e4e2dd;
+      flex-shrink: 0;
+    }
+
+    .tbtn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 5px;
+      color: #5b4039;
+      border-radius: 2px;
+      font-family: 'Material Symbols Outlined';
+      font-size: 17px;
+      line-height: 1;
+      transition: background .12s;
+    }
+
+    .tbtn:hover {
+      background: #e4e2dd;
+      color: #b02f00;
+    }
+
+    .tbtn-sep {
+      width: 1px;
+      height: 14px;
+      background: #e4beb4;
+      margin: 0 4px;
+      display: inline-block;
+    }
+
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #5b4039;
+      font-weight: 600;
+    }
+
+    .toggle {
+      position: relative;
+      width: 32px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .tslider {
+      position: absolute;
+      inset: 0;
+      background: #e4beb4;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .tslider:before {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      left: 3px;
+      bottom: 3px;
+      background: #fff;
+      border-radius: 1px;
+      transition: .2s;
+    }
+
+    input:checked+.tslider {
+      background: #b02f00;
+    }
+
+    input:checked+.tslider:before {
+      transform: translateX(14px);
+    }
+
+    .rich-editor {
+      min-height: 240px;
+      padding: 16px 20px;
+      font-size: 13px;
+      line-height: 1.8;
+      outline: none;
+      color: #1b1c19;
+      background: #fff;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .rich-editor:focus {
+      background: #fffcfb;
+    }
+
+    .toolbar-select {
+      background: #fff;
+      border: 1px solid #e4e2dd;
+      border-radius: 2px;
+      font-size: 11px;
+      padding: 2px 4px;
+      color: #5b4039;
+      outline: none;
+      height: 24px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .color-picker-wrap {
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+
+    .color-picker-wrap:hover {
+      background: #e4e2dd;
+    }
+
+    .color-picker {
+      width: 18px;
+      height: 18px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 20px;
+      background: linear-gradient(135deg, #b02f00, #ff5722);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      transition: filter .15s;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: none;
+      border: 1px solid #e4beb4;
+      color: #5b4039;
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .btn-ghost:hover {
+      background: #f5f3ee;
+    }
+
+    /* Preview panel — second panel */
+    .preview-panel {
+      width: 290px;
+      min-width: 290px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .preview-shell {
+      background: #fff;
+      border: 1px solid #e4e2dd;
+      border-radius: 3px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .preview-chrome {
+      background: #f5f3ee;
+      padding: 8px 12px;
+      border-bottom: 1px solid #e4e2dd;
+      flex-shrink: 0;
+    }
+
+    .preview-dots {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .pdot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .preview-meta {
+      font-size: 10px;
+      color: #907067;
+      line-height: 1.7;
+    }
+
+    .preview-meta strong {
+      color: #1b1c19;
+    }
+
+    .preview-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 16px;
+      font-size: 12px;
+      line-height: 1.75;
+      color: #1b1c19;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #e4beb4;
+    }
+  </style>
+</head>
+
+<body>
+  <aside>
+    <div>
+      <div class="brand">Mail Curator</div>
+      <div class="brand-sub">Enterprise Suite</div>
+    </div>
+    <button class="btn-new" onclick="navigate('compose')">
+      <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">add</span> Create New
+    </button>
+    <nav>
+      <button class="nav-item active" onclick="navigate('compose')">
+        <span class="material-symbols-outlined">edit_note</span> Compose
+      </button>
+      <button class="nav-item" onclick="navigate('contacts')">
+        <span class="material-symbols-outlined">contacts</span> Contacts
+      </button>
+      <button class="nav-item" onclick="navigate('attachments')">
+        <span class="material-symbols-outlined">attachment</span> Attachments
+      </button>
+      <button class="nav-item" onclick="navigate('send')">
+        <span class="material-symbols-outlined">send</span> Send
+      </button>
+    </nav>
+    <div class="sb-status">
+      <div class="sb-stat" id="sb-contacts">0 contacts</div>
+      <div class="sb-stat" id="sb-attachments">0 attachments</div>
+      <div class="sb-stat" id="sb-smtp">SMTP: not configured</div>
+    </div>
+  </aside>
+
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <div class="page-title-sub">Campaign Workshop</div>
+        <div class="page-title">Compose New Dispatch</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <!-- Campaign Save/Load -->
+        <span id="syncStatus" style="font-size:10px; color:#1a5c2e; opacity:0; transition:opacity 0.3s; margin-right:8px;">
+          <span class="material-symbols-outlined" style="font-size:12px; vertical-align:middle;">check_circle</span> Draft Saved
+        </span>
+        <select id="campaignLoader" class="btn-ghost" style="font-size:11px;cursor:pointer;" onchange="loadCampaignFromSelect(this)">
+          <option value="">Load Campaign…</option>
+        </select>
+        <button class="btn-ghost" onclick="syncNow()">
+          <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">sync</span> Sync Now
+        </button>
+        <button class="btn-ghost" onclick="sendTestEmail()">
+          <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">send</span> Send Test
+        </button>
+        <button class="btn-primary" onclick="navigate('contacts')">
+          Next: Contacts <span class="material-symbols-outlined"
+            style="font-size:15px;vertical-align:middle;">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="page-body">
+
+      <!-- ONE big panel: Sender / Subject / Body — all sections divided by lines -->
+      <div class="panel" style="flex:1;overflow-y:auto;">
+
+        <div class="panel-section">
+          <div class="sec-label">Sender</div>
+          <div class="field-row">
+            <div style="flex:1;">
+              <label class="field-label">From Name</label>
+              <input id="fromName" class="field" placeholder="e.g. Julian at The Curator" type="text"
+                oninput="saveCompose();updatePreview()" />
+            </div>
+            <div style="flex:1;">
+              <label class="field-label">Reply-to Address</label>
+              <input id="replyTo" class="field" placeholder="julian@curator.mail" type="email"
+                oninput="saveCompose()" />
+            </div>
+            <div style="flex:1;">
+              <label class="field-label">CC (comma separated)</label>
+              <input id="ccInput" class="field" placeholder="team@company.com" type="text" oninput="saveCompose()" />
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div class="sec-label" style="margin-bottom:0;">Subject Line</div>
+            <span id="subjectCounter" style="font-size:10px;color:#c4a89e;">0 / 120</span>
+          </div>
+          <input id="subjectInput" class="field" placeholder="Enter your narrative headline..." type="text"
+            oninput="updateSubjectCounter();saveCompose();updatePreview()" maxlength="120" />
+          <div class="chips">
+            <span class="chips-lbl">Insert:</span>
+            <button class="chip" onclick="insertPlaceholder('subjectInput','$name')">$name</button>
+            <button class="chip" onclick="insertPlaceholder('subjectInput','$company')">$company</button>
+            <button class="chip" onclick="insertPlaceholder('subjectInput','$role')">$role</button>
+            <button class="chip" onclick="insertPlaceholder('subjectInput','$city')">$city</button>
+          </div>
+        </div>
+
+        <div class="panel-section" style="padding:0;flex:1;display:flex;flex-direction:column;min-height:320px;">
+          <div class="toolbar">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <!-- Typography -->
+              <select id="fontSelect" class="toolbar-select"
+                onchange="updateEditorStyles();execCmd('fontName', this.value)" style="width:90px;">
+                <option value="'Aptos', sans-serif">Aptos</option>
+                <option value="'Calibri', sans-serif">Calibri</option>
+                <option value="'Arial', sans-serif">Arial</option>
+                <option value="'Georgia', serif">Georgia</option>
+                <option value="'Times New Roman', serif">Times</option>
+              </select>
+              <select id="sizeSelect" class="toolbar-select"
+                onchange="updateEditorStyles();execCmd('fontSize', this.value)" style="width:45px;">
+                <option value="1">10px</option>
+                <option value="2">12px</option>
+                <option value="3">14px</option>
+                <option value="4">16px</option>
+                <option value="5">18px</option>
+                <option value="6">24px</option>
+              </select>
+              <div class="color-picker-wrap">
+                <input type="color" id="colorPicker" class="color-picker" value="#1b1c19"
+                  oninput="updateEditorStyles();execCmd('foreColor', this.value)" title="Text Color" />
+              </div>
+              <span class="tbtn-sep"></span>
+              <button class="tbtn" onclick="execCmd('bold')" title="Bold">format_bold</button>
+              <button class="tbtn" onclick="execCmd('italic')" title="Italic">format_italic</button>
+              <button class="tbtn" onclick="execCmd('underline')" title="Underline">format_underlined</button>
+              <span class="tbtn-sep"></span>
+              <button class="tbtn" onclick="execCmd('insertUnorderedList')" title="List">format_list_bulleted</button>
+              <button class="tbtn" onclick="insertLink()" title="Link">link</button>
+            </div>
+            <div class="toggle-wrap">
+              HTML Mode
+              <label class="toggle"><input type="checkbox" id="htmlToggle" onchange="toggleHtmlMode()" /><span
+                  class="tslider"></span></label>
+            </div>
+          </div>
+          <div id="richEditorWrap" style="flex:1;display:flex;flex-direction:column;">
+            <div id="richEditor" class="rich-editor" contenteditable="true" oninput="saveCompose();updatePreview()">
+              <p><em style="font-family:'Instrument Serif',serif;font-size:20px;">Dearest $name,</em></p>
+              <p style="margin-top:10px;">It is a rare pleasure to connect with the creative minds at
+                <strong>$company</strong>. Today, I wanted to share something important with you...
+              </p>
+            </div>
+          </div>
+          <div id="htmlEditorWrap" style="display:none;flex:1;flex-direction:column;">
+            <textarea id="htmlInput" class="field"
+              style="flex:1;border-radius:0;border:none;border-bottom:1px solid #f0eee9;min-height:160px;resize:none;font-family:'Courier New',monospace;font-size:12px;"
+              placeholder="&lt;p&gt;Hello $name,&lt;/p&gt;" oninput="syncHtmlToPreview();saveCompose()"></textarea>
+            <div id="htmlPreviewPane"
+              style="padding:14px 20px;font-size:12px;line-height:1.75;background:#fffcfb;min-height:80px;"></div>
+          </div>
+          <div style="padding:10px 20px;border-top:1px solid #f0eee9;background:#fafaf8;flex-shrink:0;">
+            <div class="chips">
+              <span class="chips-lbl">Insert:</span>
+              <button class="chip" onclick="insertBodyPlaceholder('$name')">$name</button>
+              <button class="chip" onclick="insertBodyPlaceholder('$company')">$company</button>
+              <button class="chip" onclick="insertBodyPlaceholder('$role')">$role</button>
+              <button class="chip" onclick="insertBodyPlaceholder('$city')">$city</button>
+              <button class="chip" onclick="insertBodyPlaceholder('$email')">$email</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div class="sec-label" style="margin-bottom:0;">Professional Signature</div>
+            <div class="toggle-wrap" style="font-size:10px;">
+              Append to emails
+              <label class="toggle">
+                <input type="checkbox" id="sigToggle" checked onchange="saveCompose();updatePreview()"/>
+                <span class="tslider"></span>
+              </label>
+            </div>
+          </div>
+          <div id="sigEditorWrap" style="background:#fcfbf9; border:1px solid #e4e2dd; border-radius:3px;">
+            <div id="sigToolbar"
+              style="padding:4px 8px; border-bottom:1px solid #e4e2dd; display:flex; align-items:center; gap:4px;">
+              <button class="tbtn" onclick="execSigCmd('bold')" style="font-size:14px;">format_bold</button>
+              <button class="tbtn" onclick="execSigCmd('italic')" style="font-size:14px;">format_italic</button>
+              <input type="color" id="sigColorPicker" class="color-picker" style="width:16px; height:16px;"
+                oninput="execSigCmd('foreColor', this.value)" />
+              <span class="tbtn-sep"></span>
+              <button class="tbtn" onclick="insertSigImage()" style="font-size:14px;"
+                title="Insert Signature Image">image</button>
+              <input type="file" id="sigImageInput" style="display:none;" accept="image/*"
+                onchange="handleSigImage(this)" />
+            </div>
+            <div id="sigEditor" class="rich-editor" contenteditable="true"
+              style="min-height:100px; padding:12px 16px; font-size:12px;" oninput="saveCompose();updatePreview()">
+            </div>
+          </div>
+          <p style="font-size:10px; color:#907067; margin-top:8px;">Toggle to include/exclude signature in all outgoing emails.</p>
+        </div>
+
+      </div>
+
+      <!-- Preview panel — second panel -->
+      <div class="preview-panel">
+        <div class="preview-shell">
+          <div class="preview-chrome">
+            <div class="preview-dots">
+              <div class="pdot" style="background:#ef4444;"></div>
+              <div class="pdot" style="background:#f59e0b;"></div>
+              <div class="pdot" style="background:#22c55e;"></div>
+            </div>
+            <div class="preview-meta">
+              <div>From: <strong id="previewFrom">—</strong></div>
+              <div>To: <strong id="previewTo">—</strong></div>
+              <div>Subject: <strong id="previewSubject">—</strong></div>
+            </div>
+          </div>
+          <div style="padding:9px 14px;border-bottom:1px solid #f0eee9;background:#fafaf8;flex-shrink:0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+              <span
+                style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#907067;font-weight:700;">Spam
+                Score</span>
+              <span id="spamScore" style="font-size:10px;font-weight:700;color:#15803d;">0.2 (Low)</span>
+            </div>
+            <div style="height:3px;background:#e4e2dd;border-radius:1px;overflow:hidden;">
+              <div id="spamBar" style="height:100%;width:5%;background:#22c55e;transition:width .3s;"></div>
+            </div>
+          </div>
+          <div id="previewBody" class="preview-body"></div>
+          <div style="padding:12px 14px;border-top:1px solid #f0eee9;background:#fafaf8;flex-shrink:0;">
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <span class="material-symbols-outlined"
+                style="color:#b02f00;font-size:15px;margin-top:1px;vertical-align:top;">auto_awesome</span>
+              <p style="font-size:10px;color:#5b4039;line-height:1.6;">Adding a CTA in the first 200 words increases
+                click-through by ~14% for your industry.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-stats">
+        <span id="footer-contacts">0 contacts</span>
+        <span style="color:#e4e2dd;">|</span>
+        <span id="footer-attachments">0 attachments</span>
+        <span style="color:#e4e2dd;">|</span>
+        <span id="footer-smtp">SMTP: not configured</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=5"></script>
+  <script>
+    function saveCompose() {
+      AppState.compose = {
+        fromName: document.getElementById('fromName').value,
+        replyTo: document.getElementById('replyTo').value,
+        cc: document.getElementById('ccInput').value,
+        subject: document.getElementById('subjectInput').value,
+        bodyHtml: document.getElementById('richEditor').innerHTML,
+        rawHtml: document.getElementById('htmlInput').value,
+        htmlMode: document.getElementById('htmlToggle').checked,
+        fontFamily: document.getElementById('fontSelect').value,
+        fontSize: document.getElementById('sizeSelect').value,
+        textColor: document.getElementById('colorPicker').value,
+        signature: document.getElementById('sigEditor').innerHTML,
+        signatureEnabled: document.getElementById('sigToggle').checked,
+      };
+      autoSaveDebounced();
+    }
+    function loadCompose() {
+      const c = AppState.compose; if (!c) return;
+      if (c.fromName) document.getElementById('fromName').value = c.fromName;
+      if (c.replyTo) document.getElementById('replyTo').value = c.replyTo;
+      if (c.cc) document.getElementById('ccInput').value = c.cc;
+      if (c.subject) document.getElementById('subjectInput').value = c.subject;
+      if (c.bodyHtml) document.getElementById('richEditor').innerHTML = c.bodyHtml;
+      if (c.rawHtml) document.getElementById('htmlInput').value = c.rawHtml;
+      if (c.htmlMode) { document.getElementById('htmlToggle').checked = true; toggleHtmlMode(); }
+      if (c.fontFamily) document.getElementById('fontSelect').value = c.fontFamily;
+      if (c.fontSize) document.getElementById('sizeSelect').value = c.fontSize;
+      if (c.textColor) document.getElementById('colorPicker').value = c.textColor;
+      if (c.signature) document.getElementById('sigEditor').innerHTML = c.signature;
+      document.getElementById('sigToggle').checked = (c.signatureEnabled !== false);
+      document.getElementById('sigEditorWrap').style.opacity = (c.signatureEnabled !== false) ? '1' : '0.4';
+      updateSubjectCounter();
+      updateEditorStyles();
+    }
+    function updateSubjectCounter() {
+      const v = document.getElementById('subjectInput').value;
+      document.getElementById('subjectCounter').textContent = v.length + ' / 120';
+      updateSpamScore(v);
+    }
+    function updateSpamScore(subject) {
+      const words = ['free', 'win', 'winner', 'cash', 'prize', 'urgent', 'act now', 'limited', 'click here', 'guarantee'];
+      const text = (subject + ' ' + document.getElementById('richEditor').innerText).toLowerCase();
+      let score = 0; words.forEach(w => { if (text.includes(w)) score += 15; }); score = Math.min(score, 100);
+      const bar = document.getElementById('spamBar'), lbl = document.getElementById('spamScore');
+      bar.style.width = Math.max(score, 3) + '%';
+      bar.style.background = score < 30 ? '#22c55e' : score < 60 ? '#f59e0b' : '#ef4444';
+      lbl.textContent = score < 30 ? `${(score / 100 * 2).toFixed(1)} (Low)` : score < 60 ? `${(score / 100 * 5).toFixed(1)} (Med)` : `${(score / 100 * 10).toFixed(1)} (High)`;
+      lbl.style.color = score < 30 ? '#15803d' : score < 60 ? '#92400e' : '#b91c1c';
+    }
+    function insertPlaceholder(id, ph) {
+      const el = document.getElementById(id), s = el.selectionStart ?? el.value.length, e = el.selectionEnd ?? el.value.length;
+      el.value = el.value.slice(0, s) + ph + el.value.slice(e); el.selectionStart = el.selectionEnd = s + ph.length; el.focus();
+      updateSubjectCounter(); saveCompose(); updatePreview();
+    }
+    function insertBodyPlaceholder(ph) {
+      if (document.getElementById('htmlToggle').checked) {
+        const ta = document.getElementById('htmlInput'), s = ta.selectionStart;
+        ta.value = ta.value.slice(0, s) + ph + ta.value.slice(ta.selectionEnd); ta.selectionStart = ta.selectionEnd = s + ph.length; ta.focus(); syncHtmlToPreview();
+      } else { document.getElementById('richEditor').focus(); document.execCommand('insertText', false, ph); }
+      saveCompose(); updatePreview();
+    }
+    function execCmd(cmd, val = null) {
+      document.getElementById('richEditor').focus();
+      document.execCommand(cmd, false, val);
+      saveCompose();
+    }
+    function updateEditorStyles() {
+      const re = document.getElementById('richEditor');
+      re.style.fontFamily = document.getElementById('fontSelect').value;
+      re.style.fontSize = getFontSizePx(document.getElementById('sizeSelect').value) + 'px';
+      re.style.color = document.getElementById('colorPicker').value;
+      updatePreview();
+    }
+    function execSigCmd(cmd, val = null) {
+      document.getElementById('sigEditor').focus();
+      document.execCommand(cmd, false, val);
+      saveCompose();
+    }
+    function insertSigImage() { document.getElementById('sigImageInput').click(); }
+    async function handleSigImage(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      showToast('Uploading signature image...', 'info');
+      try {
+        const meta = await apiUploadFile(file);
+        const url = '/attachments/' + encodeURIComponent(meta.name);
+        const imgHtml = `<img src="${url}" style="max-width:200px; height:auto; display:block; margin:8px 0;" alt="Signature Image"/>`;
+        document.getElementById('sigEditor').focus();
+        document.execCommand('insertHTML', false, imgHtml);
+        saveCompose(); updatePreview();
+        showToast('Image inserted', 'success');
+      } catch (e) {
+        showToast('Upload failed: ' + e.message, 'error');
+      }
+    }
+    function insertLink() { const url = prompt('Enter URL:'); if (url) { document.getElementById('richEditor').focus(); document.execCommand('createLink', false, url); saveCompose(); } }
+    function toggleHtmlMode() {
+      const on = document.getElementById('htmlToggle').checked;
+      document.getElementById('richEditorWrap').style.display = on ? 'none' : 'flex';
+      document.getElementById('htmlEditorWrap').style.display = on ? 'flex' : 'none';
+      if (on) { document.getElementById('htmlInput').value = document.getElementById('richEditor').innerHTML; syncHtmlToPreview(); }
+      saveCompose(); updatePreview();
+    }
+    function syncHtmlToPreview() { document.getElementById('htmlPreviewPane').innerHTML = document.getElementById('htmlInput').value; updatePreview(); }
+    function updatePreview() {
+      const contacts = AppState.contacts, map = AppState.columnMap, c = contacts[0] || null;
+      const comp = AppState.compose;
+      document.getElementById('previewFrom').textContent = document.getElementById('fromName').value || '—';
+      document.getElementById('previewTo').textContent = c ? (c[map.email] || c.email || '—') : '—';
+      document.getElementById('previewSubject').textContent = fillPlaceholders(document.getElementById('subjectInput').value, c, map) || '—';
+      const isHtml = document.getElementById('htmlToggle').checked;
+      const raw = isHtml ? document.getElementById('htmlInput').value : document.getElementById('richEditor').innerHTML;
+      const pb = document.getElementById('previewBody');
+      pb.style.fontFamily = comp.fontFamily;
+      pb.style.fontSize = getFontSizePx(comp.fontSize) + 'px';
+      pb.style.color = comp.textColor;
+      pb.innerHTML = fillPlaceholders(raw, c, map, true);
+    }
+    async function sendTestEmail() {
+      if (!AppState.smtpTested) { showToast('Configure and test SMTP first on the Send page', 'warning'); return; }
+      const compose = AppState.compose, smtp = AppState.smtp;
+      showToast('Sending test email to ' + smtp.email + '...', 'info');
+      let finalHtml = `<div style="font-family:${compose.fontFamily}; font-size:${getFontSizePx(compose.fontSize)}px; color:${compose.textColor}; line-height:1.6;">`;
+      finalHtml += fillPlaceholders(compose.bodyHtml, null, null, true);
+      finalHtml += `</div>`;
+      try {
+        await apiPost('/send/test-email', {
+          smtp: { host: smtp.host, port: parseInt(smtp.port) || 587, email: smtp.email, password: smtp.pass || '' },
+          compose: {
+            from_name: compose.fromName || '',
+            reply_to: compose.replyTo || null,
+            cc: compose.cc || null,
+            subject: (compose.subject || '(Test Email)'),
+            body_html: finalHtml,
+            html_mode: true,
+          },
+          to: smtp.email,
+        });
+        showToast('Test email delivered to ' + smtp.email, 'success');
+      } catch (e) {
+        showToast('Test failed: ' + e.message, 'error');
+      }
+    }
+    // ─── Auto-Save ────────────────────────────────────────────────────────────
+    const autoSaveDebounced = debounce(async () => {
+      const c = AppState.compose;
+      if (!c.subject || c.subject === '') return;
+      
+      const statusEl = document.getElementById('syncStatus');
+      try {
+        await apiPost('/campaigns', {
+          name: c.subject || 'Auto-Save Draft',
+          from_name: c.fromName||'', reply_to: c.replyTo||null, cc: c.cc||null,
+          subject: c.subject||'(Untitled)', body_html: c.bodyHtml||'',
+          font_family: c.fontFamily, font_size: c.fontSize, text_color: c.textColor,
+          signature: c.signature, signature_enabled: c.signatureEnabled !== false,
+        });
+        statusEl.style.opacity = '1';
+        setTimeout(() => { statusEl.style.opacity = '0'; }, 3000);
+      } catch(e) {
+        console.warn('Auto-save failed:', e);
+      }
+    }, 2000);
+
+    function syncNow() {
+      saveCompose();
+      autoSaveDebounced();
+      showToast('Syncing with cloud...', 'info');
+    }
+
+    // ─── Campaign Save / Load ──────────────────────────────────────────────────
+    async function saveCampaignToDb() {
+      const name = prompt('Campaign name:', document.getElementById('subjectInput').value || 'My Campaign');
+      if (!name) return;
+      saveCompose();
+      const c = AppState.compose;
+      try {
+        await apiPost('/campaigns', {
+          name,
+          from_name: c.fromName||'', reply_to: c.replyTo||null, cc: c.cc||null,
+          subject: c.subject||'(Untitled)', body_html: c.bodyHtml||'',
+          font_family: c.fontFamily, font_size: c.fontSize, text_color: c.textColor,
+          signature: c.signature, signature_enabled: c.signatureEnabled !== false,
+        });
+        showToast('Campaign "'+name+'" saved', 'success');
+        loadCampaignList();
+      } catch(e) { showToast('Save failed: '+e.message, 'error'); }
+    }
+    async function loadCampaignList() {
+      try {
+        const campaigns = await apiGet('/campaigns');
+        const sel = document.getElementById('campaignLoader');
+        sel.innerHTML = '<option value="">Load Campaign…</option>';
+        campaigns.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = c.name + ' (' + new Date(c.updated_at).toLocaleDateString() + ')';
+          sel.appendChild(opt);
+        });
+      } catch { /* DB not available */ }
+    }
+    async function loadCampaignFromSelect(sel) {
+      const id = sel.value; if (!id) return;
+      try {
+        const c = await apiGet('/campaigns/' + id);
+        AppState.compose = {
+          fromName: c.from_name||'', replyTo: c.reply_to||'', cc: c.cc||'',
+          subject: c.subject, bodyHtml: c.body_html,
+          fontFamily: c.font_family||"'Aptos', sans-serif", fontSize: c.font_size||'4',
+          textColor: c.text_color||'#1b1c19', signature: c.signature||'',
+          signatureEnabled: c.signature_enabled !== false,
+        };
+        loadCompose();
+        showToast('Loaded: '+c.name, 'success');
+        sel.value = '';
+      } catch(e) { showToast('Load failed: '+e.message, 'error'); }
+    }
+    // ─── Init ──────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCompose(); updateStatusBar(); updatePreview(); loadCampaignList();
+      document.getElementById('sigToggle').addEventListener('change', function() {
+        document.getElementById('sigEditorWrap').style.opacity = this.checked ? '1' : '0.4';
+        saveCompose(); updatePreview();
+      });
+    });
+  </script>
+</body>
+
+</html>

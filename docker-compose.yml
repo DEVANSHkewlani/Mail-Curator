@@ -1,0 +1,43 @@
+services:
+  # ─── Application ─────────────────────────────────────────────────────────
+  app:
+    build: .
+    container_name: curator_mail_app
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://curator:curator@db:5432/curator_mail}
+      SECRET_KEY: ${SECRET_KEY:-editorial-excellence-curator-mail-secret-2024}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # Persist uploaded attachment files across restarts
+      - uploads:/app/backend/uploads
+    restart: unless-stopped
+
+  # ─── Database ─────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: curator_mail_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-curator}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-curator}
+      POSTGRES_DB: ${POSTGRES_DB:-curator_mail}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+# ─── Volumes ──────────────────────────────────────────────────────────────────
+volumes:
+  pgdata:
+    driver: local
+  uploads:
+    driver: local

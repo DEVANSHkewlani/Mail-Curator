@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Curator Mail — Contacts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#f0eee9;color:#1b1c19;display:flex;height:100vh;overflow:hidden;}
+aside{width:220px;min-width:220px;background:#fbf9f4;border-right:1px solid #e4e2dd;display:flex;flex-direction:column;padding:24px 16px;gap:20px;}
+.brand{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:#1b1c19;}
+.brand-sub{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#907067;margin-top:2px;}
+.btn-new{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;background:linear-gradient(135deg,#b02f00,#ff5722);color:#fff;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border:none;cursor:pointer;border-radius:3px;width:100%;}
+nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#5b4039;cursor:pointer;border-radius:3px;border:none;background:none;width:100%;text-align:left;transition:background .15s;}
+.nav-item:hover{background:#f0eee9;}
+.nav-item.active{background:#fff;color:#b02f00;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-item.active .material-symbols-outlined{color:#b02f00;}
+.nav-item .material-symbols-outlined{font-size:17px;color:#907067;}
+.sb-status{border-top:1px solid #e4e2dd;padding-top:14px;display:flex;flex-direction:column;gap:5px;}
+.sb-stat{font-size:10px;color:#907067;}
+.page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.page-header{background:#fbf9f4;border-bottom:1px solid #e4e2dd;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.page-title-sub{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#b02f00;}
+.page-title{font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;color:#1b1c19;line-height:1.1;margin-top:2px;}
+.page-body{flex:1;overflow:hidden;display:flex;gap:16px;padding:20px 24px 0;}
+.footer-bar{background:#fbf9f4;border-top:1px solid #e4e2dd;padding:7px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.footer-stats{display:flex;gap:16px;font-size:10px;color:#907067;}
+.footer-links{display:flex;gap:14px;font-size:10px;}
+.footer-links a{color:#c4a89e;text-decoration:none;}
+.footer-links a:hover{color:#5b4039;}
+/* Panels */
+.panel{background:#fff;border:1px solid #e4e2dd;display:flex;flex-direction:column;overflow:hidden;border-radius:3px;}
+.panel-section{padding:16px 20px;border-bottom:1px solid #f0eee9;flex-shrink:0;}
+.panel-section:last-child{border-bottom:none;}
+.sec-label{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#907067;font-weight:700;margin-bottom:10px;}
+.field{width:100%;background:#f5f3ee;border:1px solid transparent;border-radius:3px;padding:8px 12px;font-size:13px;color:#1b1c19;outline:none;font-family:'Inter',sans-serif;transition:border-color .15s;}
+.field:focus{border-color:#ff572260;box-shadow:0 0 0 2px #ff572218;}
+.field::placeholder{color:#c4a89e;}
+select.field{cursor:pointer;}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:linear-gradient(135deg,#b02f00,#ff5722);color:#fff;font-size:11px;font-weight:600;border:none;border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;transition:filter .15s;}
+.btn-primary:hover{filter:brightness(1.08);}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:none;border:1px solid #e4beb4;color:#5b4039;font-size:11px;font-weight:500;border-radius:3px;cursor:pointer;transition:background .15s;}
+.btn-ghost:hover{background:#f5f3ee;}
+/* Drop zone */
+.drop-zone{border:2px dashed #e4beb4;border-radius:3px;padding:36px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:all .2s;}
+.drop-zone:hover,.drop-zone.drag-over{border-color:#b02f00;background:#fff8f6;}
+/* Table */
+table{width:100%;border-collapse:collapse;}
+thead th{background:#f5f3ee;padding:9px 14px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#5b4039;white-space:nowrap;border-bottom:1px solid #e4e2dd;}
+tbody tr{border-bottom:1px solid #f5f3ee;transition:background .1s;}
+tbody tr:hover{background:#fafaf8;}
+tbody td{padding:9px 14px;font-size:12px;color:#1b1c19;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.row-error{background:#fff5f5!important;}
+.row-error td{color:#ba1a1a;}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-radius:2px;}
+.badge-ok{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.badge-err{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
+/* Stats panel */
+.stat-big{font-family:'Instrument Serif',serif;font-style:italic;font-size:44px;color:#b02f00;line-height:1;}
+.progress-track{height:3px;background:#e4e2dd;border-radius:1px;overflow:hidden;margin:8px 0 4px;}
+.progress-fill{height:100%;background:#b02f00;transition:width .4s;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:#e4beb4;}
+</style>
+</head>
+<body>
+<aside>
+  <div>
+    <div class="brand">The Curator Mail</div>
+    <div class="brand-sub">Enterprise Suite</div>
+  </div>
+  <button class="btn-new" onclick="navigate('compose')">
+    <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">add</span> Create New
+  </button>
+  <nav>
+    <button class="nav-item" onclick="navigate('compose')">
+      <span class="material-symbols-outlined">edit_note</span> Compose
+    </button>
+    <button class="nav-item active" onclick="navigate('contacts')">
+      <span class="material-symbols-outlined">contacts</span> Contacts
+    </button>
+    <button class="nav-item" onclick="navigate('attachments')">
+      <span class="material-symbols-outlined">attachment</span> Attachments
+    </button>
+    <button class="nav-item" onclick="navigate('send')">
+      <span class="material-symbols-outlined">send</span> Send
+    </button>
+  </nav>
+  <div class="sb-status">
+    <div class="sb-stat" id="sb-contacts">0 contacts</div>
+    <div class="sb-stat" id="sb-attachments">0 attachments</div>
+    <div class="sb-stat" id="sb-smtp">SMTP: not configured</div>
+  </div>
+  <div style="margin-top:auto; padding-top:10px; border-top:1px solid #e4e2dd;">
+    <button class="nav-item" onclick="AUTH.logout()" style="color:#b02f00;">
+      <span class="material-symbols-outlined">logout</span>
+      Log Out
+    </button>
+  </div>
+</aside>
+
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title-sub">Audience Management</div>
+      <div class="page-title">Contacts &amp; Data</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-ghost" onclick="downloadSampleCsv()">
+        <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">download</span> Sample CSV
+      </button>
+      <button class="btn-primary" onclick="navigate('attachments')">
+        Next: Attachments <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- MAIN panel: Upload / Column Map / Table — all in one box -->
+    <div class="panel" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+
+      <!-- Upload section -->
+      <div class="panel-section">
+        <div class="sec-label">Upload CSV</div>
+        <div id="csvDropZone" class="drop-zone" onclick="document.getElementById('csvFileInput').click()"
+          ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <span class="material-symbols-outlined" style="font-size:32px;color:#e4beb4;margin-bottom:8px;vertical-align:middle;">upload_file</span>
+          <p style="font-size:13px;font-weight:600;color:#1b1c19;">Drop your CSV here</p>
+          <p style="font-size:11px;color:#907067;margin-top:4px;">or click to browse — columns auto-detected</p>
+          <input type="file" id="csvFileInput" accept=".csv,.txt" style="display:none;" onchange="handleFileInput(this.files[0])"/>
+        </div>
+      </div>
+
+      <!-- Column mapper — hidden until CSV loaded -->
+      <div id="columnMapper" style="display:none;" class="panel-section">
+        <div class="sec-label">Map Columns</div>
+        <div id="mapperFields" style="display:flex;flex-wrap:wrap;gap:12px;"></div>
+      </div>
+
+      <!-- Search bar -->
+      <div id="searchBar" style="display:none;padding:10px 20px;border-bottom:1px solid #f0eee9;background:#fafaf8;flex-shrink:0;display:none;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:#c4a89e;vertical-align:middle;">search</span>
+          <input id="searchInput" style="flex:1;background:transparent;border:none;outline:none;font-size:13px;color:#1b1c19;font-family:'Inter',sans-serif;" placeholder="Search contacts..." oninput="filterContacts()"/>
+          <span id="rowCount" style="font-size:10px;color:#907067;white-space:nowrap;"></span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div id="tableWrap" style="display:none;flex:1;overflow:auto;">
+        <table>
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Table footer stats -->
+      <div id="tableStats" style="display:none;padding:8px 20px;border-top:1px solid #f0eee9;font-size:10px;color:#907067;background:#fafaf8;flex-shrink:0;"></div>
+
+    </div>
+
+    <!-- STATS panel: validation numbers -->
+    <div class="panel" style="width:220px;min-width:220px;overflow-y:auto;">
+
+      <div class="sidebar-footer">
+        <button class="nav-item nav-inactive" onclick="AUTH.logout()" style="width:100%; border:none; background:none;">
+          <span class="material-symbols-outlined">logout</span>
+          <span class="nav-label">Log Out</span>
+        </button>
+      </div>
+
+      <div class="panel-section">
+        <div class="sec-label">Validation</div>
+        <div class="stat-big" id="statValid">0</div>
+        <div style="font-size:11px;color:#907067;margin-top:4px;">Verified Records</div>
+        <div class="progress-track"><div id="validBar" class="progress-fill" style="width:0%;"></div></div>
+        <div id="validPct" style="font-size:9px;font-weight:700;color:#b02f00;text-transform:uppercase;letter-spacing:.1em;">—</div>
+      </div>
+
+      <div id="errorCard" class="panel-section" style="display:none;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#b91c1c;font-weight:700;">Anomalies</div>
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:36px;color:#b91c1c;line-height:1;margin-top:4px;" id="statSkipped">0</div>
+          </div>
+          <span class="material-symbols-outlined" style="color:#b91c1c;font-size:18px;vertical-align:middle;">error_outline</span>
+        </div>
+        <p style="font-size:10px;color:#b91c1c;line-height:1.6;">Rows with missing or invalid email addresses were quarantined.</p>
+      </div>
+
+      <div class="panel-section">
+        <div class="sec-label">Tips</div>
+        <p style="font-size:11px;color:#5b4039;line-height:1.65;">Your CSV must have an <strong>email</strong> column. Optional: <code style="background:#f5f3ee;padding:1px 4px;border-radius:2px;">name</code>, <code style="background:#f5f3ee;padding:1px 4px;border-radius:2px;">company</code>, <code style="background:#f5f3ee;padding:1px 4px;border-radius:2px;">role</code>, <code style="background:#f5f3ee;padding:1px 4px;border-radius:2px;">city</code>.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-stats">
+      <span id="footer-contacts">0 contacts</span>
+      <span style="color:#e4e2dd;">|</span>
+      <span id="footer-attachments">0 attachments</span>
+      <span style="color:#e4e2dd;">|</span>
+      <span id="footer-smtp">SMTP: not configured</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=5"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  updateStatusBar();
+  if(AppState.contacts.length>0){ renderMapper(AppState.csvHeaders); renderTable(AppState.contacts,AppState.skipped); updateStats(); }
+});
+function handleDragOver(e){ e.preventDefault(); document.getElementById('csvDropZone').classList.add('drag-over'); }
+function handleDragLeave(e){ document.getElementById('csvDropZone').classList.remove('drag-over'); }
+function handleDrop(e){ e.preventDefault(); document.getElementById('csvDropZone').classList.remove('drag-over'); const f=e.dataTransfer.files[0]; if(f) processFile(f); }
+function handleFileInput(f){ if(f) processFile(f); }
+function processFile(file){
+  if(!file.name.match(/\.(csv|txt)$/i)){ showToast('Please upload a .csv file','error'); return; }
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const result=parseCSVText(e.target.result);
+    if(!result){ showToast('CSV must have a header row and data rows','error'); return; }
+    AppState.contacts=result.contacts; AppState.skipped=result.skipped;
+    AppState.csvHeaders=result.headers; AppState.columnMap=result.map;
+    renderMapper(result.headers); renderTable(result.contacts,result.skipped);
+    updateStats(); updateStatusBar();
+    showToast(result.contacts.length+' contacts loaded, '+result.skipped.length+' skipped','success');
+  };
+  reader.readAsText(file);
+}
+function renderMapper(headers){
+  const wrap=document.getElementById('mapperFields'); wrap.innerHTML='';
+  const roles=['name','email','company','role','city'],map=AppState.columnMap;
+  roles.forEach(role=>{
+    const div=document.createElement('div'); div.style.cssText='display:flex;flex-direction:column;gap:4px;';
+    div.innerHTML='<label style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#5b4039;font-weight:700;">'+role+'</label>'
+      +'<select class="field" style="width:130px;padding:6px 10px;" onchange="updateMap(\''+role+'\',this.value)">'
+      +'<option value="">— none —</option>'
+      +headers.map(h=>'<option value="'+h+'"'+(map[role]===h?' selected':'')+'>'+h+'</option>').join('')
+      +'</select>';
+    wrap.appendChild(div);
+  });
+  document.getElementById('columnMapper').style.display='block';
+}
+function updateMap(role,col){ const map=AppState.columnMap; map[role]=col; AppState.columnMap=map; renderTable(AppState.contacts,AppState.skipped); }
+let _filtered=[];
+function renderTable(contacts,skipped){
+  _filtered=[...contacts]; _drawTable(_filtered,skipped);
+  document.getElementById('tableWrap').style.display='block';
+  document.getElementById('searchBar').style.display='block';
+  document.getElementById('tableStats').style.display='block';
+}
+function filterContacts(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  _filtered=AppState.contacts.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q)));
+  _drawTable(_filtered,AppState.skipped);
+}
+function _drawTable(rows,skipped){
+  const headers=AppState.csvHeaders;
+  document.getElementById('tableHead').innerHTML='<tr>'+headers.map(h=>'<th>'+h+'</th>').join('')+'<th>Status</th></tr>';
+  let html=rows.map(r=>'<tr>'+headers.map(h=>'<td title="'+(r[h]||'')+'">'+(r[h]||'')+'</td>').join('')+'<td><span class="badge badge-ok">Valid</span></td></tr>').join('');
+  if(skipped&&skipped.length) html+=skipped.map(s=>'<tr class="row-error">'+headers.map(h=>'<td>'+(s.row[h]||'')+'</td>').join('')+'<td><span class="badge badge-err">'+s.reason+'</span></td></tr>').join('');
+  document.getElementById('tableBody').innerHTML=html;
+  document.getElementById('rowCount').textContent=rows.length+' / '+AppState.contacts.length;
+}
+function updateStats(){
+  const n=AppState.contacts.length,s=AppState.skipped.length,total=n+s;
+  document.getElementById('statValid').textContent=n;
+  document.getElementById('statSkipped').textContent=s;
+  document.getElementById('validBar').style.width=total>0?Math.round(n/total*100)+'%':'0%';
+  document.getElementById('validPct').textContent=total>0?Math.round(n/total*100)+'% Success':'—';
+  document.getElementById('tableStats').textContent=n+' contacts loaded'+(s?', '+s+' skipped (missing email)':'');
+  document.getElementById('errorCard').style.display=s>0?'block':'none';
+}
+function downloadSampleCsv(){
+  const csv='name,email,company,role,city\nJane Doe,jane@example.com,Acme Inc,Engineer,New York\nJohn Smith,john@example.com,Globex,Manager,San Francisco\nSarah Lee,sarah@example.com,Initech,Designer,Austin';
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='sample_contacts.csv'; a.click();
+}
+</script>
+</body>
+</html>

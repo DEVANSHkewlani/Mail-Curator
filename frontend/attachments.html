@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Curator Mail — Attachments</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#f0eee9;color:#1b1c19;display:flex;height:100vh;overflow:hidden;}
+aside{width:220px;min-width:220px;background:#fbf9f4;border-right:1px solid #e4e2dd;display:flex;flex-direction:column;padding:24px 16px;gap:20px;}
+.brand{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:#1b1c19;}
+.brand-sub{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#907067;margin-top:2px;}
+.btn-new{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;background:linear-gradient(135deg,#b02f00,#ff5722);color:#fff;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border:none;cursor:pointer;border-radius:3px;width:100%;}
+nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#5b4039;cursor:pointer;border-radius:3px;border:none;background:none;width:100%;text-align:left;transition:background .15s;}
+.nav-item:hover{background:#f0eee9;}
+.nav-item.active{background:#fff;color:#b02f00;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-item.active .material-symbols-outlined{color:#b02f00;}
+.nav-item .material-symbols-outlined{font-size:17px;color:#907067;}
+.sb-status{border-top:1px solid #e4e2dd;padding-top:14px;display:flex;flex-direction:column;gap:5px;}
+.sb-stat{font-size:10px;color:#907067;}
+.page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.page-header{background:#fbf9f4;border-bottom:1px solid #e4e2dd;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.page-title-sub{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#b02f00;}
+.page-title{font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;color:#1b1c19;line-height:1.1;margin-top:2px;}
+.page-body{flex:1;overflow:hidden;display:flex;gap:16px;padding:20px 24px 0;}
+.footer-bar{background:#fbf9f4;border-top:1px solid #e4e2dd;padding:7px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.footer-stats{display:flex;gap:16px;font-size:10px;color:#907067;}
+.footer-links{display:flex;gap:14px;font-size:10px;}
+.footer-links a{color:#c4a89e;text-decoration:none;}
+.footer-links a:hover{color:#5b4039;}
+.panel{background:#fff;border:1px solid #e4e2dd;display:flex;flex-direction:column;overflow:hidden;border-radius:3px;}
+.panel-section{padding:16px 20px;border-bottom:1px solid #f0eee9;flex-shrink:0;}
+.panel-section:last-child{border-bottom:none;}
+.sec-label{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#907067;font-weight:700;margin-bottom:10px;}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:linear-gradient(135deg,#b02f00,#ff5722);color:#fff;font-size:11px;font-weight:600;border:none;border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;transition:filter .15s;}
+.btn-primary:hover{filter:brightness(1.08);}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:none;border:1px solid #e4beb4;color:#5b4039;font-size:11px;font-weight:500;border-radius:3px;cursor:pointer;transition:background .15s;}
+.btn-ghost:hover{background:#f5f3ee;}
+.drop-zone{border:2px dashed #e4beb4;border-radius:3px;padding:40px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:all .2s;}
+.drop-zone:hover,.drop-zone.drag-over{border-color:#b02f00;background:#fff8f6;}
+.file-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #f5f3ee;transition:background .1s;}
+.file-row:hover{background:#fafaf8;}
+.file-row:last-child{border-bottom:none;}
+.file-icon{width:32px;height:32px;background:#f5f3ee;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.remove-btn{margin-left:auto;background:none;border:none;cursor:pointer;color:#c4a89e;padding:3px;border-radius:2px;display:flex;align-items:center;transition:color .15s;}
+.remove-btn:hover{color:#ba1a1a;}
+.warning-banner{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;background:#fef2f2;border-bottom:1px solid #fecaca;font-size:12px;color:#b91c1c;}
+.progress-track{height:3px;background:#e4e2dd;border-radius:1px;overflow:hidden;margin:8px 0 4px;}
+.progress-fill{height:100%;background:#b02f00;transition:width .4s;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:#e4beb4;}
+</style>
+</head>
+<body>
+<aside>
+  <div>
+    <div class="brand">The Curator Mail</div>
+    <div class="brand-sub">Enterprise Suite</div>
+  </div>
+  <button class="btn-new" onclick="navigate('compose')">
+    <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">add</span> Create New
+  </button>
+  <nav>
+    <button class="nav-item" onclick="navigate('compose')">
+      <span class="material-symbols-outlined">edit_note</span> Compose
+    </button>
+    <button class="nav-item" onclick="navigate('contacts')">
+      <span class="material-symbols-outlined">contacts</span> Contacts
+    </button>
+    <button class="nav-item active" onclick="navigate('attachments')">
+      <span class="material-symbols-outlined">attachment</span> Attachments
+    </button>
+    <button class="nav-item" onclick="navigate('send')">
+      <span class="material-symbols-outlined">send</span> Send
+    </button>
+  </nav>
+  <div class="sb-status">
+    <div class="sb-stat" id="sb-contacts">0 contacts</div>
+    <div class="sb-stat" id="sb-attachments">0 attachments</div>
+    <div class="sb-stat" id="sb-smtp">SMTP: not configured</div>
+  </div>
+  <div style="margin-top:auto; padding-top:10px; border-top:1px solid #e4e2dd;">
+    <button class="nav-item" onclick="AUTH.logout()" style="color:#b02f00;">
+      <span class="material-symbols-outlined">logout</span>
+      Log Out
+    </button>
+  </div>
+</aside>
+
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title-sub">Campaign Assets</div>
+      <div class="page-title">Digital Attachments</div>
+    </div>
+    <button class="btn-primary" onclick="navigate('send')">
+      Next: Send <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">arrow_forward</span>
+    </button>
+  </div>
+
+  <div class="page-body">
+
+    <!-- MAIN panel: warning / upload / file list — all one box -->
+    <div class="panel" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+
+      <!-- Warning banner — hidden until over limit -->
+      <div id="sizeWarning" style="display:none;" class="warning-banner">
+        <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;flex-shrink:0;">warning</span>
+        <div>
+          <p style="font-weight:600;">Total size exceeds 10 MB</p>
+          <p style="font-size:11px;margin-top:2px;color:#dc2626;">Some mail servers may reject this. Consider using external links instead.</p>
+        </div>
+      </div>
+
+      <!-- Upload section -->
+      <div class="panel-section">
+        <div class="sec-label">Upload Files</div>
+        <div id="attDropZone" class="drop-zone" onclick="document.getElementById('attFileInput').click()"
+          ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <span class="material-symbols-outlined" style="font-size:32px;color:#e4beb4;margin-bottom:8px;vertical-align:middle;">cloud_upload</span>
+          <p style="font-size:13px;font-weight:600;color:#1b1c19;">Drop files here</p>
+          <p style="font-size:11px;color:#907067;margin-top:4px;">or click to browse — multiple files supported</p>
+          <input type="file" id="attFileInput" multiple style="display:none;" onchange="handleFileInput(this.files)"/>
+        </div>
+      </div>
+
+      <!-- File list section -->
+      <div class="panel-section" style="flex:1;overflow-y:auto;padding:0;">
+        <div id="fileList"></div>
+        <div id="emptyState" style="padding:32px;text-align:center;color:#c4a89e;font-size:12px;">No files attached yet.</div>
+      </div>
+
+      <!-- Footer: total size -->
+      <div style="padding:9px 20px;border-top:1px solid #f0eee9;background:#fafaf8;flex-shrink:0;font-size:10px;color:#907067;" id="totalSize"></div>
+
+    </div>
+
+    <!-- STORAGE panel -->
+    <div class="panel" style="width:220px;min-width:220px;overflow-y:auto;">
+
+      <div class="panel-section">
+        <div class="sec-label">Storage</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:11px;color:#5b4039;font-weight:600;">Used</span>
+          <span id="storageUsedPct" style="font-size:11px;font-weight:700;color:#b02f00;">0%</span>
+        </div>
+        <div class="progress-track"><div id="storageBar" class="progress-fill" style="width:0%;"></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;">
+            <span style="color:#907067;">Limit</span><span style="font-weight:500;">10.0 MB</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;">
+            <span style="color:#907067;">Current</span><span id="storageUsed" style="font-weight:500;">0 B</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;">
+            <span style="color:#907067;">Files</span><span id="storageCount" style="font-weight:500;">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="sec-label">Supported</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;">
+          <span style="background:#f0eee9;padding:3px 8px;border-radius:2px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#5b4039;">PDF</span>
+          <span style="background:#f0eee9;padding:3px 8px;border-radius:2px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#5b4039;">Images</span>
+          <span style="background:#f0eee9;padding:3px 8px;border-radius:2px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#5b4039;">Docs</span>
+          <span style="background:#f0eee9;padding:3px 8px;border-radius:2px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#5b4039;">ZIP</span>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="sec-label">Note</div>
+        <p style="font-size:11px;color:#5b4039;line-height:1.65;">Most servers handle up to 25 MB, but 10 MB is the recommended maximum for guaranteed delivery through enterprise firewalls.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-stats">
+      <span id="footer-contacts">0 contacts</span>
+      <span style="color:#e4e2dd;">|</span>
+      <span id="footer-attachments">0 attachments</span>
+      <span style="color:#e4e2dd;">|</span>
+      <span id="footer-smtp">SMTP: not configured</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=5"></script>
+<script>
+let _fileObjects={};
+document.addEventListener('DOMContentLoaded',()=>{
+  updateStatusBar();
+  AppState.attachments.forEach(meta=>renderFileMeta(meta));
+  updateStorageUI();
+});
+function handleDragOver(e){ e.preventDefault(); document.getElementById('attDropZone').classList.add('drag-over'); }
+function handleDragLeave(e){ document.getElementById('attDropZone').classList.remove('drag-over'); }
+function handleDrop(e){ e.preventDefault(); document.getElementById('attDropZone').classList.remove('drag-over'); addFiles(e.dataTransfer.files); }
+function handleFileInput(files){ addFiles(files); }
+async function addFiles(files){
+  const existing=AppState.attachments; let added=0;
+  for(const f of Array.from(files)){
+    if(existing.find(m=>m.name===f.name)){showToast(f.name+' already added','warning');continue;}
+    // Show an optimistic uploading indicator in the log / toast
+    showToast('Uploading '+f.name+'...','info');
+    try{
+      const meta=await apiUploadFile(f);
+      const item={name:meta.name,size:meta.size,type:meta.mime_type};
+      existing.push(item); _fileObjects[meta.name]=f;
+      renderFileMeta(item); added++;
+    }catch(e){
+      showToast('Upload failed for '+f.name+': '+e.message,'error');
+      console.error('Upload error',f.name,e);
+    }
+  }
+  AppState.attachments=existing; updateStorageUI(); updateStatusBar();
+  if(added>0) showToast(added+' file'+(added>1?'s':'')+' uploaded','success');
+}
+function renderFileMeta(meta){
+  document.getElementById('emptyState').style.display='none';
+  const list=document.getElementById('fileList');
+  const icon=getFileIcon(meta.name);
+  const div=document.createElement('div'); div.className='file-row'; div.id='file-'+CSS.escape(meta.name);
+  div.innerHTML='<div class="file-icon"><span class="material-symbols-outlined" style="font-size:17px;color:#907067;vertical-align:middle;">'+icon+'</span></div>'
+    +'<div style="flex:1;min-width:0;"><p style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+meta.name+'</p>'
+    +'<p style="font-size:10px;color:#907067;margin-top:2px;">'+formatBytes(meta.size)+'</p></div>'
+    +'<button class="remove-btn" onclick="removeFile(\''+meta.name.replace(/'/g,"\\'")+'\')">'
+    +'<span class="material-symbols-outlined" style="font-size:17px;vertical-align:middle;">close</span></button>';
+  list.appendChild(div);
+}
+async function removeFile(name){
+  const el=document.getElementById('file-'+CSS.escape(name)); if(el) el.remove();
+  delete _fileObjects[name];
+  AppState.attachments=AppState.attachments.filter(m=>m.name!==name);
+  if(AppState.attachments.length===0) document.getElementById('emptyState').style.display='block';
+  updateStorageUI(); updateStatusBar();
+  // Best-effort delete from backend
+  await apiDeleteFile(name).catch(()=>{});
+}
+function getFileIcon(name){
+  const ext=name.split('.').pop().toLowerCase();
+  if(['pdf'].includes(ext)) return 'picture_as_pdf';
+  if(['jpg','jpeg','png','gif','webp','svg'].includes(ext)) return 'image';
+  if(['zip','rar','7z','tar','gz'].includes(ext)) return 'folder_zip';
+  if(['doc','docx'].includes(ext)) return 'description';
+  if(['xls','xlsx','csv'].includes(ext)) return 'table_chart';
+  return 'attach_file';
+}
+function updateStorageUI(){
+  const files=AppState.attachments,total=files.reduce((s,f)=>s+f.size,0),limit=10*1024*1024;
+  const pct=Math.min(Math.round(total/limit*100),100),over=total>limit;
+  document.getElementById('storageBar').style.width=pct+'%';
+  document.getElementById('storageBar').style.background=over?'#ba1a1a':'#b02f00';
+  document.getElementById('storageUsedPct').textContent=pct+'%';
+  document.getElementById('storageUsedPct').style.color=over?'#ba1a1a':'#b02f00';
+  document.getElementById('storageUsed').textContent=formatBytes(total);
+  document.getElementById('storageUsed').style.color=over?'#ba1a1a':'#1b1c19';
+  document.getElementById('storageCount').textContent=files.length;
+  document.getElementById('totalSize').textContent=files.length?'Total: '+formatBytes(total):'';
+  document.getElementById('sizeWarning').style.display=over?'flex':'none';
+}
+</script>
+</body>
+</html>
